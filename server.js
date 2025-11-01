@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Your calculator functions
 const add = (a, b) => a + b;
@@ -42,6 +42,11 @@ app.get('/api/status', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date() });
 });
 
-app.listen(PORT, () => {
-    console.log(`Calculator API server running on port ${PORT}`);
-});
+// Only start server if not in test environment
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Calculator API server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;
